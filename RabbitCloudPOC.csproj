@@ -11,6 +11,7 @@
     <PackageReference Include="Confluent.Kafka" Version="2.8.0" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.7-develop.2215" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
   </ItemGroup>
 

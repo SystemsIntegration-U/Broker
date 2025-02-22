@@ -12,6 +12,7 @@ namespace ChatApp
 
             Env.Load();
             var rabbitMqConnection = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION");
+            Console.WriteLine(rabbitMqConnection + "**********");
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
@@ -39,7 +40,7 @@ namespace ChatApp
                 .Build();
 
             var producer = host.Services.GetRequiredService<ChatProducer>();
-            await producer.SendMessageAsync("Hello, from Sebas!");
+            await producer.SendMessageAsync("Hello, from Ignacio!");
 
             await host.RunAsync();
         }
