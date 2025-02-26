@@ -21,13 +21,24 @@ namespace ChatApp
                             x.AddConsumer<ChatConsumer>();
 
                             x.UsingRabbitMq((ctx, cfg) =>
-                            {
+                             {
                                 cfg.Host(new Uri(rabbitMqConnection), h =>
                                 {
                                     h.UseSsl(s => s.Protocol = System.Security.Authentication.SslProtocols.Tls12);
                                 });
+                                
+                                cfg.ConfigureJsonSerializerOptions(options =>
+                                {
+                                    options.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                                    options.WriteIndented = true;
+                                    return options;
+                                });
 
                                 cfg.ReceiveEndpoint("zi", e =>
+                                {
+                                    e.ConfigureConsumer<ChatConsumer>(ctx);
+                                });
+                                cfg.ReceiveEndpoint("no", e =>
                                 {
                                     e.ConfigureConsumer<ChatConsumer>(ctx);
                                 });
@@ -40,7 +51,7 @@ namespace ChatApp
                 .Build();
 
             var producer = host.Services.GetRequiredService<ChatProducer>();
-            await producer.SendMessageAsync("Hello, from Ignacio!");
+            await producer.SendMessageAsync(new ChatMessage("Hello, from Sebas!"));
 
             await host.RunAsync();
         }

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using MassTransit;
 
 namespace ChatApp
@@ -8,12 +9,13 @@ namespace ChatApp
 
         public ChatProducer(IBus bus) => _bus = bus;
 
-        public async Task SendMessageAsync(string message)
+        public async Task SendMessageAsync(ChatMessage message)
         {
             var sendEndpoint = await _bus.GetSendEndpoint(new Uri("queue:zi"));
-            await sendEndpoint.Send(new ChatMessage(message));
+            await sendEndpoint.Send(message);
 
-            Console.WriteLine($"Message sent: {message}");
+            string jsonMessage = JsonSerializer.Serialize(message, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine($"Message sent (JSON): {jsonMessage}");
         }
     }
 }

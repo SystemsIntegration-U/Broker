@@ -1,3 +1,4 @@
+using System.Text.Json;
 using MassTransit;
 
 namespace ChatApp
@@ -6,7 +7,8 @@ namespace ChatApp
     {
         public Task Consume(ConsumeContext<ChatMessage> context)
         {
-            Console.WriteLine($"Received message: {context.Message.Message}");
+            string jsonMessage = JsonSerializer.Serialize(context.Message, new JsonSerializerOptions { WriteIndented = true });
+            Console.WriteLine($"Received message (JSON): {jsonMessage}");
             return Task.CompletedTask;
         }
     }
